@@ -1,200 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VagCare - Scientific Sexual Health Education (18+)</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: system-ui, sans-serif; }
-        .fade-in { animation: fadeIn 0.4s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VagCare | Scientific Sexual Health Education for Adults (18+)</title>
+
+<meta name="description" content="VagCare provides medically accurate, stigma-free sexual health education for Indian adults (18+). Learn about reproductive health, STIs, contraception, consent, and emotional well-being.">
+
+<meta name="keywords" content="sexual health education India, STI awareness, contraception education, consent education, reproductive health India">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="bg-slate-50 text-slate-900">
-    <div id="root"></div>
-    <script type="text/babel">
-        const { useState, useEffect, createContext, useContext } = React;
 
-        // YAHAN APNI GOOGLE GEMINI API KEY DAALEIN (Quotes ke andar)
-        const apiKey = "AIzaSyCdj_suMWg7EY5jVuslR4oz_E53vu-Q-WI"; 
+<!-- HEADER -->
+<header class="bg-white shadow sticky top-0 z-50">
+<div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+<h1 class="text-xl font-bold text-teal-700">VagCare.in</h1>
+<nav class="space-x-6 hidden md:block">
+<a href="index.html" class="nav-link font-semibold text-teal-700">Home</a>
+<a href="learn.html" class="nav-link">Learn</a>
+<a href="myths.html" class="nav-link">Myths</a>
+<a href="faq.html" class="nav-link">FAQ</a>
+<a href="guidance.html" class="nav-link">Guidance</a>
+<a href="legal.html" class="nav-link">Legal</a>
+<a href="about.html" class="nav-link">About</a>
+</nav>
+</div>
+</header>
 
-        const callGeminiAPI = async (prompt, sysInst) => {
-            if (!apiKey) return "API Key missing! Please add your Gemini API key in line 23.";
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            try {
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: sysInst }] } })
-                });
-                if (!res.ok) throw new Error("API Error");
-                const data = await res.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
-            } catch (e) { return "Unable to connect to AI server. Check API Key."; }
-        };
+<!-- HERO SECTION -->
+<section class="bg-teal-700 text-white text-center py-20 px-4">
+<h2 class="text-4xl md:text-5xl font-bold mb-6">
+Scientific Sexual Health Education for Adults (18+)
+</h2>
 
-        const LangContext = createContext();
+<p class="max-w-3xl mx-auto text-lg">
+Confidential. Evidence-based. Respectful.  
+Empowering adults with medically accurate and stigma-free sexual health knowledge.
+</p>
 
-        const AgeModal = ({ onVerify }) => {
-            const { lang } = useContext(LangContext);
-            return (
-                <div className="fixed inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl max-w-sm w-full p-8 text-center shadow-2xl">
-                        <i className="fa-solid fa-lock text-4xl text-teal-600 bg-teal-100 p-4 rounded-full mb-4"></i>
-                        <h2 className="text-2xl font-bold mb-2">{lang === 'en' ? '18+ Required' : '18+ आयु आवश्यक'}</h2>
-                        <p className="text-slate-600 mb-6 text-sm">{lang === 'en' ? 'Educational content for adults only.' : 'यह शैक्षिक सामग्री केवल वयस्कों के लिए है।'}</p>
-                        <button onClick={onVerify} className="w-full bg-teal-600 text-white py-3 rounded-lg font-bold">{lang === 'en' ? 'I am 18+ (Enter)' : 'मैं 18+ हूँ (Enter)'}</button>
-                    </div>
-                </div>
-            );
-        };
+<div class="mt-8">
+<a href="learn.html" class="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition">
+Start Learning
+</a>
+</div>
 
-        const Header = ({ tab, setTab, menuOpen, setMenuOpen }) => {
-            const { lang, setLang } = useContext(LangContext);
-            const navs = [{id:'home', icon:'fa-heart'}, {id:'learn', icon:'fa-book-open'}, {id:'ask-ai', icon:'fa-wand-magic-sparkles text-amber-500'}];
-            return (
-                <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
-                    <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-                        <div className="flex items-center cursor-pointer" onClick={() => setTab('home')}>
-                            <i className="fa-solid fa-stethoscope text-2xl text-teal-600 mr-2"></i>
-                            <h1 className="text-xl font-bold text-teal-800">VagCare.in</h1>
-                        </div>
-                        <div className="flex gap-3">
-                            <button onClick={() => setLang(lang === 'en' ? 'hi' : 'en')} className="px-3 py-1 rounded-full border border-teal-200 text-teal-700 bg-teal-50 text-sm font-bold">
-                                <i className="fa-solid fa-globe mr-1"></i> {lang === 'en' ? 'हिंदी' : 'English'}
-                            </button>
-                            <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-xl"><i className="fa-solid fa-bars"></i></button>
-                        </div>
-                    </div>
-                    {menuOpen && (
-                        <div className="bg-white border-b px-4 py-2 flex flex-col gap-3 shadow-lg absolute w-full">
-                            {['home', 'learn', 'myths', 'faq', 'guidance', 'ask-ai'].map(t => (
-                                <button key={t} onClick={()=>{setTab(t); setMenuOpen(false);}} className="text-left font-medium capitalize text-slate-700 py-2 border-b border-slate-50">{t.replace('-',' ')}</button>
-                            ))}
-                        </div>
-                    )}
-                </header>
-            );
-        };
+<p class="mt-6 text-sm opacity-90">
+⚠ This website is strictly for adults aged 18 years and above.
+</p>
+</section>
 
-        const Home = ({ setTab }) => {
-            const { lang } = useContext(LangContext);
-            return (
-                <div className="fade-in py-16 px-4 text-center">
-                    <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-bold mb-4 inline-block">18+ Education Portal</span>
-                    <h1 className="text-4xl font-extrabold text-slate-900 mb-4">{lang === 'en' ? 'Scientific Sexual Health' : 'वैज्ञानिक यौन स्वास्थ्य शिक्षा'}</h1>
-                    <p className="text-slate-600 mb-8 max-w-md mx-auto">{lang === 'en' ? 'Medically accurate, stigma-free knowledge.' : 'स्वस्थ जीवन के लिए सटीक और कलंक-मुक्त जानकारी।'}</p>
-                    <button onClick={() => setTab('learn')} className="bg-teal-600 text-white px-8 py-3 rounded-lg font-bold shadow-lg w-full sm:w-auto mb-4">{lang === 'en' ? 'Start Learning' : 'सीखना शुरू करें'}</button>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 max-w-4xl mx-auto">
-                        <div className="bg-white p-4 rounded-xl shadow-sm border"><i className="fa-solid fa-user-doctor text-2xl text-teal-500 mb-2"></i><h3 className="font-bold">Medical Facts</h3></div>
-                        <div className="bg-white p-4 rounded-xl shadow-sm border"><i className="fa-solid fa-shield text-2xl text-blue-500 mb-2"></i><h3 className="font-bold">Safe & Secure</h3></div>
-                        <div className="bg-white p-4 rounded-xl shadow-sm border"><i className="fa-solid fa-lock text-2xl text-purple-500 mb-2"></i><h3 className="font-bold">100% Private</h3></div>
-                    </div>
-                </div>
-            );
-        };
-        const Learn = () => {
-            const { lang } = useContext(LangContext);
-            return (
-                <div className="fade-in max-w-3xl mx-auto px-4 py-8 space-y-6">
-                    <h2 className="text-3xl font-bold text-center mb-6">{lang === 'en' ? 'Educational Hub' : 'शैक्षिक केंद्र'}</h2>
-                    
-                    <div className="bg-white p-6 rounded-xl border shadow-sm">
-                        <h3 className="text-xl font-bold text-teal-700 mb-2"><i className="fa-solid fa-shield-virus mr-2"></i>{lang === 'en' ? 'Safe Sex & Condoms' : 'सुरक्षित सेक्स और कंडोम'}</h3>
-                        <p className="text-slate-700">{lang === 'en' ? 'Condoms are the ONLY method protecting against BOTH pregnancy and STIs. Use a new one every time. Never use two at once.' : 'कंडोम एकमात्र ऐसा तरीका है जो गर्भ और एसटीआई (STIs) दोनों से बचाता है। हर बार नया उपयोग करें। एक साथ दो कभी उपयोग न करें।'}</p>
-                    </div>
+<!-- ABOUT PREVIEW -->
+<section class="max-w-6xl mx-auto px-4 py-16 text-center">
+<h3 class="text-3xl font-bold mb-6">Why VagCare?</h3>
+<p class="max-w-3xl mx-auto">
+Sexual health education remains surrounded by myths, stigma, and misinformation. VagCare provides structured, medically accurate educational content designed for responsible adult learning.
+</p>
+</section>
 
-                    <div className="bg-white p-6 rounded-xl border shadow-sm">
-                        <h3 className="text-xl font-bold text-teal-700 mb-2"><i className="fa-solid fa-heart-circle-check mr-2"></i>{lang === 'en' ? 'Consent (S ahmati)' : 'सहमति (Consent)'}</h3>
-                        <p className="text-slate-700">{lang === 'en' ? 'Consent must be clear and ongoing. Silence is not consent. Mutual respect is key.' : 'सहमति स्पष्ट होनी चाहिए। चुप्पी का मतलब हाँ नहीं है। आपसी सम्मान बहुत ज़रूरी है।'}</p>
-                    </div>
-                    
-                    <div className="bg-white p-6 rounded-xl border shadow-sm">
-                        <h3 className="text-xl font-bold text-teal-700 mb-2"><i className="fa-solid fa-notes-medical mr-2"></i>{lang === 'en' ? 'Common STIs' : 'आम एसटीआई (STDs)'}</h3>
-                        <p className="text-slate-700">{lang === 'en' ? 'Many STIs have no early symptoms. Annual checkups and condom usage are vital for sexually active adults.' : 'कई STIs के शुरुआती लक्षण नहीं होते। नियमित जांच और कंडोम का उपयोग बहुत आवश्यक है।'}</p>
-                    </div>
-                </div>
-            );
-        };
+<!-- FEATURE SECTION -->
+<section class="bg-white py-16">
+<div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-8">
 
-        const AskAI = () => {
-            const { lang } = useContext(LangContext);
-            const [q, setQ] = useState("");
-            const [ans, setAns] = useState("");
-            const [loading, setLoading] = useState(false);
+<div class="section-card">
+<h4 class="text-xl font-bold text-teal-700 mb-3">Reproductive Health</h4>
+<p>Understand anatomy, physiology, hormonal balance, and reproductive wellness.</p>
+</div>
 
-            const handleAsk = async () => {
-                if(!q.trim()) return;
-                setLoading(true); setAns("");
-                const prompt = `Act as an expert medical educator on VagCare. Answer this question scientifically and non-explicitly in ${lang === 'en' ? 'professional English' : 'easy-to-understand Hindi (Devanagari)'}: ${q}. Add a short medical disclaimer at the end.`;
-                const res = await callGeminiAPI(q, prompt);
-                setAns(res); setLoading(false);
-            };
+<div class="section-card">
+<h4 class="text-xl font-bold text-teal-700 mb-3">Safe Practices</h4>
+<p>Learn about contraception, STI prevention, testing awareness, and consent.</p>
+</div>
 
-            return (
-                <div className="fade-in max-w-3xl mx-auto px-4 py-8">
-                    <div className="text-center mb-6">
-                        <i className="fa-solid fa-wand-magic-sparkles text-4xl text-amber-500 mb-2"></i>
-                        <h2 className="text-3xl font-bold">{lang === 'en' ? 'Ask AI Anonymously' : 'AI से गुप्त रूप से पूछें'}</h2>
-                    </div>
-                    <div className="bg-white p-4 rounded-xl shadow-md border mb-6">
-                        <textarea value={q} onChange={e=>setQ(e.target.value)} placeholder={lang === 'en' ? 'Type your question here...' : 'अपना सवाल यहाँ लिखें...'} className="w-full bg-slate-50 border rounded-lg p-4 mb-3" rows="3"></textarea>
-                        <button onClick={handleAsk} disabled={loading || !q.trim()} className="w-full bg-teal-600 text-white py-3 rounded-lg font-bold disabled:bg-slate-300">
-                            {loading ? <i className="fa-solid fa-spinner fa-spin"></i> : (lang === 'en' ? 'Ask Now ✨' : 'अभी पूछें ✨')}
-                        </button>
-                    </div>
-                    {ans && <div className="bg-teal-50 p-6 rounded-xl border border-teal-100 whitespace-pre-wrap text-slate-800 leading-relaxed shadow-sm"><i className="fa-solid fa-robot mr-2 text-teal-600"></i> {ans}</div>}
-                </div>
-            );
-        };
-        const SimpleText = ({ titleEn, titleHi, textEn, textHi }) => {
-            const { lang } = useContext(LangContext);
-            return (
-                <div className="max-w-3xl mx-auto px-4 py-12 text-center fade-in">
-                    <h2 className="text-3xl font-bold mb-6">{lang === 'en' ? titleEn : titleHi}</h2>
-                    <div className="bg-white p-6 rounded-xl border shadow-sm text-left">{lang === 'en' ? textEn : textHi}</div>
-                </div>
-            );
-        };
+<div class="section-card">
+<h4 class="text-xl font-bold text-teal-700 mb-3">Mental & Emotional Well-being</h4>
+<p>Explore the psychological aspects of intimacy and healthy relationships.</p>
+</div>
 
-        const App = () => {
-            const [tab, setTab] = useState('home');
-            const [lang, setLang] = useState('hi'); 
-            const [ageVerified, setAgeVerified] = useState(false);
-            const [menuOpen, setMenuOpen] = useState(false);
+</div>
+</section>
 
-            useEffect(() => { window.scrollTo(0, 0); }, [tab]);
+<!-- CALL TO ACTION -->
+<section class="bg-teal-100 text-center py-16 px-4">
+<h3 class="text-2xl font-bold mb-4">Begin Your Learning Journey</h3>
+<a href="learn.html" class="bg-teal-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-700 transition">
+Explore Educational Topics
+</a>
+</section>
 
-            return (
-                <LangContext.Provider value={{ lang, setLang }}>
-                    {!ageVerified ? <AgeModal onVerify={() => setAgeVerified(true)} /> : (
-                        <div className="min-h-screen flex flex-col">
-                            <Header tab={tab} setTab={setTab} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-                            <main className="flex-grow">
-                                {tab === 'home' && <Home setTab={setTab} />}
-                                {tab === 'learn' && <Learn />}
-                                {tab === 'ask-ai' && <AskAI />}
-                                {tab === 'myths' && <SimpleText titleEn="Myth Busters" titleHi="मिथक बनाम सच" textEn={<p><strong>Myth:</strong> Masturbation causes weakness.<br/><br/><strong>Fact:</strong> Scientifically, it is normal and healthy. It does not cause physical weakness.</p>} textHi={<p><strong>मिथक:</strong> हस्तमैथुन से कमजोरी आती है।<br/><br/><strong>सच:</strong> यह वैज्ञानिक रूप से सामान्य और स्वस्थ है। इससे कोई शारीरिक कमजोरी नहीं होती।</p>} />}
-                                {tab === 'faq' && <SimpleText titleEn="FAQs" titleHi="सवाल-जवाब" textEn={<p><strong>Q: Best way to prevent STDs?</strong><br/>A: Consistent use of condoms.</p>} textHi={<p><strong>सवाल: STDs से बचने का सही तरीका?</strong><br/>जवाब: कंडोम का लगातार सही उपयोग।</p>} />}
-                                {tab === 'guidance' && <SimpleText titleEn="Medical Guidance" titleHi="चिकित्सा मार्गदर्शन" textEn={<p>Always consult a certified doctor (MBBS/MD) for pain or unusual symptoms. Consultations are confidential.</p>} textHi={<p>लगातार दर्द या लक्षणों के लिए हमेशा डॉक्टर (MBBS/MD) से सलाह लें। आपकी जानकारी गोपनीय रहती है।</p>} />}
-                            </main>
-                            <footer className="bg-slate-900 text-slate-400 py-6 text-center text-sm px-4">
-                                <p><i className="fa-solid fa-circle-exclamation text-yellow-500 mr-1"></i> {lang === 'en' ? 'Educational purposes only (18+). Consult a doctor.' : 'केवल शैक्षिक उद्देश्यों के लिए (18+)। डॉक्टर से सलाह लें।'}</p>
-                                <p className="mt-2">© 2026 VagCare.in</p>
-                            </footer>
-                        </div>
-                    )}
-                </LangContext.Provider>
-            );
-        };
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-center py-8 px-4">
+<p class="footer-note">
+This is educational content, not a substitute for medical consultation.
+</p>
+<p class="footer-note mt-2">
+18+ Only | © 2026 VagCare.in
+</p>
+</footer>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
 </body>
 </html>
