@@ -21,12 +21,22 @@
       <priority>0.8</priority>
    </url>
    <url>
+      <loc>https://vagcare.in/guidance.html</loc>
+      <lastmod>2026-02-25</lastmod>
+      <priority>0.7</priority>
+   </url>
+   <url>
       <loc>https://vagcare.in/privacy.html</loc>
       <lastmod>2026-02-25</lastmod>
       <priority>0.5</priority>
    </url>
    <url>
       <loc>https://vagcare.in/terms.html</loc>
+      <lastmod>2026-02-25</lastmod>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>https://vagcare.in/about.html</loc>
       <lastmod>2026-02-25</lastmod>
       <priority>0.5</priority>
    </url>
