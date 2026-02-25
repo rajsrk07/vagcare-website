@@ -1,0 +1,31 @@
+/* Navigation Links */
+.nav-link {
+    color: #334155;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #0d9488;
+}
+
+/* Section Card Styling */
+.section-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer Note */
+.footer-note {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+/* Responsive Text Fix */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 28px;
+    }
+}
