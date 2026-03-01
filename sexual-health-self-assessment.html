@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sexual Health Self Assessment Tool (18+) | VagCare India</title>
+
+<meta name="description" content="Educational sexual health self assessment tool for adults in India. Gender-based questionnaire with probable risk indication and medical guidance.">
+
+<meta name="keywords" content="sexual health assessment India, STI symptom checker, male sexual health, female sexual health, safe sex education India">
+
+<meta name="author" content="VagCare">
+
+<meta property="og:title" content="VagCare Sexual Health Self Assessment (18+)">
+<meta property="og:description" content="Educational self assessment tool for adult sexual health awareness.">
+<meta property="og:type" content="website">
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7529823789783915"
+     crossorigin="anonymous"></script>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "MedicalWebPage",
+ "name": "VagCare Sexual Health Self Assessment",
+ "description": "Educational gender-based sexual health self assessment tool for adults.",
+ "audience": {
+   "@type": "PeopleAudience",
+   "suggestedMinAge": 18
+ }
+}
+</script>
+
+<style>
+body {font-family: Arial; max-width:900px; margin:auto; padding:20px; line-height:1.6;}
+header {text-align:center;}
+.section {margin-top:30px;}
+button {padding:10px 20px; background:#0066cc; color:white; border:none; cursor:pointer;}
+.result-box {background:#f5f5f5; padding:20px; margin-top:20px; border-radius:6px;}
+.warning {color:red; font-weight:bold;}
+.ad-box {margin:30px 0; text-align:center;}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>VagCare Sexual Health Self Assessment</h1>
+<p><strong>For Adults (18+) – Educational Purpose Only</strong></p>
+<p class="warning">This tool provides probable educational guidance only and is NOT a medical diagnosis.</p>
+</header>
+
+<!-- Top Ad -->
+<div class="ad-box">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7529823789783915"
+     data-ad-slot="1111111111"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="section">
+<h2>Select Your Gender</h2>
+<select id="gender" onchange="showQuestions()">
+<option value="">-- Select Gender --</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select>
+</div>
+
+<form id="quizForm">
+
+<div id="maleQuestions" style="display:none;">
+<h2>Male Sexual Health Questions</h2>
+</div>
+
+<div id="femaleQuestions" style="display:none;">
+<h2>Female Sexual Health Questions</h2>
+</div>
+
+<br>
+<button type="button" onclick="calculateRisk()">Check My Assessment</button>
+
+</form>
+
+<div id="result" class="result-box"></div>
+
+<!-- Bottom Ad -->
+<div class="ad-box">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7529823789783915"
+     data-ad-slot="2222222222"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<footer>
+<hr>
+<p><strong>Legal Disclaimer:</strong> This self assessment is for educational awareness only. It does not replace medical advice, diagnosis, or treatment. Always consult a certified healthcare professional.</p>
+<p>18+ Only. Educational intent. No explicit content. Respect, consent, and safety are essential in all relationships.</p>
+</footer>
+
+<script>
+
+const maleQ = [
+"Pain or burning during urination?",
+"Penile discharge?",
+"Testicular pain or swelling?",
+"Erectile difficulty?",
+"Genital sores or ulcers?",
+"Itching or irritation?",
+"Fever after sexual contact?",
+"Recent unprotected sexual contact?",
+"Lower abdominal pain?",
+"Skin rash in genital area?"
+];
+
+const femaleQ = [
+"Unusual vaginal discharge?",
+"Pelvic or lower abdominal pain?",
+"Pain during urination?",
+"Irregular bleeding?",
+"Itching or irritation?",
+"Pain during intercourse?",
+"Fever after sexual contact?",
+"Recent unprotected sexual contact?",
+"Genital sores or lesions?",
+"Strong unpleasant odor?"
+];
+
+function showQuestions(){
+let gender = document.getElementById("gender").value;
+let maleDiv = document.getElementById("maleQuestions");
+let femaleDiv = document.getElementById("femaleQuestions");
+
+maleDiv.style.display="none";
+femaleDiv.style.display="none";
+
+if(gender==="male"){
+maleDiv.style.display="block";
+if(maleDiv.innerHTML.length<100){
+maleQ.forEach((q,i)=>{
+maleDiv.innerHTML += `<p>${i+1}. ${q}</p>
+<input type="radio" name="m${i}" value="2"> Yes
+<input type="radio" name="m${i}" value="0"> No`;
+});
+}
+}
+
+if(gender==="female"){
+femaleDiv.style.display="block";
+if(femaleDiv.innerHTML.length<100){
+femaleQ.forEach((q,i)=>{
+femaleDiv.innerHTML += `<p>${i+1}. ${q}</p>
+<input type="radio" name="f${i}" value="2"> Yes
+<input type="radio" name="f${i}" value="0"> No`;
+});
+}
+}
+}
+
+function calculateRisk(){
+
+let gender = document.getElementById("gender").value;
+if(gender===""){ alert("Please select gender."); return; }
+
+let prefix = gender==="male" ? "m" : "f";
+let total=0, answered=0;
+
+for(let i=0;i<10;i++){
+let options = document.getElementsByName(prefix+i);
+for(let opt of options){
+if(opt.checked){
+total += parseInt(opt.value);
+answered++;
+}
+}
+}
+
+if(answered<10){ alert("Please answer all questions."); return; }
+
+let percent = Math.round((total/20)*100);
+
+let level="", advice="";
+
+if(percent<30){
+level="Low Risk Indicators";
+advice="Maintain hygiene, safe practices and regular health checkups.";
+}
+else if(percent<60){
+level="Moderate Risk Indicators";
+advice="Symptoms may indicate infection or inflammation. Medical consultation recommended.";
+}
+else{
+level="High Risk Indicators";
+advice="Possible sexually transmitted or reproductive condition. Seek professional evaluation immediately.";
+}
+
+document.getElementById("result").innerHTML=
+"<h3>Assessment Result</h3>"+
+"<p><strong>Risk Percentage:</strong> "+percent+"%</p>"+
+"<p><strong>Probable Indicator:</strong> "+level+"</p>"+
+"<p><strong>Advice:</strong> "+advice+"</p>"+
+"<p class='warning'>This is NOT a medical diagnosis.</p>";
+
+}
+
+</script>
+
+</body>
+</html>
